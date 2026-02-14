@@ -1,0 +1,245 @@
+{
+  "consonants": [
+    {
+      "group_name": "Plosives (Взрывные)",
+      "sounds": [
+        { "symbol": "p", "name": "voiceless bilabial plosive", "place": "bilabial", "manner": "plosive", "voiced": false, "rarity": 0.05 },
+        { "symbol": "b", "name": "voiced bilabial plosive", "place": "bilabial", "manner": "plosive", "voiced": true, "rarity": 0.15 },
+        { "symbol": "t", "name": "voiceless alveolar plosive", "place": "alveolar", "manner": "plosive", "voiced": false, "rarity": 0.01 },
+        { "symbol": "d", "name": "voiced alveolar plosive", "place": "alveolar", "manner": "plosive", "voiced": true, "rarity": 0.15 },
+        { "symbol": "ʈ", "name": "voiceless retroflex plosive", "place": "retroflex", "manner": "plosive", "voiced": false, "rarity": 0.7 },
+        { "symbol": "ɖ", "name": "voiced retroflex plosive", "place": "retroflex", "manner": "plosive", "voiced": true, "rarity": 0.75 },
+        { "symbol": "c", "name": "voiceless palatal plosive", "place": "palatal", "manner": "plosive", "voiced": false, "rarity": 0.6 },
+        { "symbol": "ɟ", "name": "voiced palatal plosive", "place": "palatal", "manner": "plosive", "voiced": true, "rarity": 0.65 },
+        { "symbol": "k", "name": "voiceless velar plosive", "place": "velar", "manner": "plosive", "voiced": false, "rarity": 0.02 },
+        { "symbol": "g", "name": "voiced velar plosive", "place": "velar", "manner": "plosive", "voiced": true, "rarity": 0.2 },
+        { "symbol": "q", "name": "voiceless uvular plosive", "place": "uvular", "manner": "plosive", "voiced": false, "rarity": 0.6 },
+        { "symbol": "ɢ", "name": "voiced uvular plosive", "place": "uvular", "manner": "plosive", "voiced": true, "rarity": 0.8 },
+        { "symbol": "ʔ", "name": "glottal stop", "place": "glottal", "manner": "plosive", "voiced": false, "rarity": 0.4 }
+      ]
+    },
+    {
+      "group_name": "Nasals (Носовые)",
+      "sounds": [
+        { "symbol": "m", "name": "bilabial nasal", "place": "bilabial", "manner": "nasal", "voiced": true, "rarity": 0.01 },
+        { "symbol": "ɱ", "name": "labiodental nasal", "place": "labiodental", "manner": "nasal", "voiced": true, "rarity": 0.8 },
+        { "symbol": "n", "name": "alveolar nasal", "place": "alveolar", "manner": "nasal", "voiced": true, "rarity": 0.01 },
+        { "symbol": "ɳ", "name": "retroflex nasal", "place": "retroflex", "manner": "nasal", "voiced": true, "rarity": 0.75 },
+        { "symbol": "ɲ", "name": "palatal nasal", "place": "palatal", "manner": "nasal", "voiced": true, "rarity": 0.5 },
+        { "symbol": "ŋ", "name": "velar nasal", "place": "velar", "manner": "nasal", "voiced": true, "rarity": 0.4 },
+        { "symbol": "ɴ", "name": "uvular nasal", "place": "uvular", "manner": "nasal", "voiced": true, "rarity": 0.9 }
+      ]
+    },
+    {
+      "group_name": "Trills & Taps (Дрожащие и Одноударные)",
+      "sounds": [
+        { "symbol": "ʙ", "name": "bilabial trill", "place": "bilabial", "manner": "trill", "voiced": true, "rarity": 0.95 },
+        { "symbol": "r", "name": "alveolar trill", "place": "alveolar", "manner": "trill", "voiced": true, "rarity": 0.4 },
+        { "symbol": "ʀ", "name": "uvular trill", "place": "uvular", "manner": "trill", "voiced": true, "rarity": 0.6 },
+        { "symbol": "ⱱ", "name": "labiodental flap", "place": "labiodental", "manner": "tap", "voiced": true, "rarity": 0.95 },
+        { "symbol": "ɾ", "name": "alveolar tap", "place": "alveolar", "manner": "tap", "voiced": true, "rarity": 0.3 },
+        { "symbol": "ɽ", "name": "retroflex flap", "place": "retroflex", "manner": "tap", "voiced": true, "rarity": 0.8 }
+      ]
+    },
+    {
+      "group_name": "Fricatives (Фрикативные/Щелевые)",
+      "sounds": [
+        { "symbol": "ɸ", "name": "voiceless bilabial fricative", "place": "bilabial", "manner": "fricative", "voiced": false, "rarity": 0.7 },
+        { "symbol": "β", "name": "voiced bilabial fricative", "place": "bilabial", "manner": "fricative", "voiced": true, "rarity": 0.6 },
+        { "symbol": "f", "name": "voiceless labiodental fricative", "place": "labiodental", "manner": "fricative", "voiced": false, "rarity": 0.2 },
+        { "symbol": "v", "name": "voiced labiodental fricative", "place": "labiodental", "manner": "fricative", "voiced": true, "rarity": 0.3 },
+        { "symbol": "θ", "name": "voiceless dental fricative", "place": "dental", "manner": "fricative", "voiced": false, "rarity": 0.7 },
+        { "symbol": "ð", "name": "voiced dental fricative", "place": "dental", "manner": "fricative", "voiced": true, "rarity": 0.75 },
+        { "symbol": "s", "name": "voiceless alveolar fricative", "place": "alveolar", "manner": "fricative", "voiced": false, "rarity": 0.05 },
+        { "symbol": "z", "name": "voiced alveolar fricative", "place": "alveolar", "manner": "fricative", "voiced": true, "rarity": 0.25 },
+        { "symbol": "ʃ", "name": "voiceless postalveolar fricative", "place": "postalveolar", "manner": "fricative", "voiced": false, "rarity": 0.3 },
+        { "symbol": "ʒ", "name": "voiced postalveolar fricative", "place": "postalveolar", "manner": "fricative", "voiced": true, "rarity": 0.5 },
+        { "symbol": "ʂ", "name": "voiceless retroflex fricative", "place": "retroflex", "manner": "fricative", "voiced": false, "rarity": 0.6 },
+        { "symbol": "ʐ", "name": "voiced retroflex fricative", "place": "retroflex", "manner": "fricative", "voiced": true, "rarity": 0.7 },
+        { "symbol": "ç", "name": "voiceless palatal fricative", "place": "palatal", "manner": "fricative", "voiced": false, "rarity": 0.6 },
+        { "symbol": "ʝ", "name": "voiced palatal fricative", "place": "palatal", "manner": "fricative", "voiced": true, "rarity": 0.7 },
+        { "symbol": "x", "name": "voiceless velar fricative", "place": "velar", "manner": "fricative", "voiced": false, "rarity": 0.3 },
+        { "symbol": "ɣ", "name": "voiced velar fricative", "place": "velar", "manner": "fricative", "voiced": true, "rarity": 0.4 },
+        { "symbol": "χ", "name": "voiceless uvular fricative", "place": "uvular", "manner": "fricative", "voiced": false, "rarity": 0.6 },
+        { "symbol": "ʁ", "name": "voiced uvular fricative", "place": "uvular", "manner": "fricative", "voiced": true, "rarity": 0.5 },
+        { "symbol": "ħ", "name": "voiceless pharyngeal fricative", "place": "pharyngeal", "manner": "fricative", "voiced": false, "rarity": 0.8 },
+        { "symbol": "ʕ", "name": "voiced pharyngeal fricative", "place": "pharyngeal", "manner": "fricative", "voiced": true, "rarity": 0.85 },
+        { "symbol": "h", "name": "voiceless glottal fricative", "place": "glottal", "manner": "fricative", "voiced": false, "rarity": 0.2 },
+        { "symbol": "ɦ", "name": "voiced glottal fricative", "place": "glottal", "manner": "fricative", "voiced": true, "rarity": 0.6 }
+      ]
+    },
+    {
+      "group_name": "Approximants (Аппроксиманты)",
+      "sounds": [
+        { "symbol": "ʋ", "name": "labiodental approximant", "place": "labiodental", "manner": "approximant", "voiced": true, "rarity": 0.6 },
+        { "symbol": "ɹ", "name": "alveolar approximant", "place": "alveolar", "manner": "approximant", "voiced": true, "rarity": 0.3 },
+        { "symbol": "ɻ", "name": "retroflex approximant", "place": "retroflex", "manner": "approximant", "voiced": true, "rarity": 0.7 },
+        { "symbol": "j", "name": "palatal approximant", "place": "palatal", "manner": "approximant", "voiced": true, "rarity": 0.1 },
+        { "symbol": "ɰ", "name": "velar approximant", "place": "velar", "manner": "approximant", "voiced": true, "rarity": 0.9 }
+      ]
+    },
+    {
+      "group_name": "Lateral Approximants (Боковые)",
+      "sounds": [
+        { "symbol": "l", "name": "alveolar lateral approximant", "place": "alveolar", "manner": "lateral", "voiced": true, "rarity": 0.1 },
+        { "symbol": "ɭ", "name": "retroflex lateral approximant", "place": "retroflex", "manner": "lateral", "voiced": true, "rarity": 0.7 },
+        { "symbol": "ʎ", "name": "palatal lateral approximant", "place": "palatal", "manner": "lateral", "voiced": true, "rarity": 0.5 },
+        { "symbol": "ʟ", "name": "velar lateral approximant", "place": "velar", "manner": "lateral", "voiced": true, "rarity": 0.9 }
+      ]
+    },
+    {
+      "group_name": "Lateral Fricatives (Боковые фрикативные)",
+      "sounds": [
+        { "symbol": "ɬ", "name": "voiceless alveolar lateral fricative", "place": "alveolar", "manner": "lateral fricative", "voiced": false, "rarity": 0.8 },
+        { "symbol": "ɮ", "name": "voiced alveolar lateral fricative", "place": "alveolar", "manner": "lateral fricative", "voiced": true, "rarity": 0.85 }
+      ]
+    },
+    {
+      "group_name": "Clicks (Щелкающие / Кликсы)",
+      "sounds": [
+        { "symbol": "ʘ", "name": "bilabial click", "place": "bilabial", "manner": "click", "voiced": false, "rarity": 0.98 },
+        { "symbol": "ǀ", "name": "dental click", "place": "dental", "manner": "click", "voiced": false, "rarity": 0.95 },
+        { "symbol": "ǃ", "name": "alveolar click", "place": "alveolar", "manner": "click", "voiced": false, "rarity": 0.95 },
+        { "symbol": "ǂ", "name": "palatoalveolar click", "place": "palatoalveolar", "manner": "click", "voiced": false, "rarity": 0.96 },
+        { "symbol": "ǁ", "name": "alveolar lateral click", "place": "alveolar", "manner": "click", "voiced": false, "rarity": 0.95 }
+      ]
+    },
+    {
+      "group_name": "Implosives (Имплозивные)",
+      "sounds": [
+        { "symbol": "ɓ", "name": "voiced bilabial implosive", "place": "bilabial", "manner": "implosive", "voiced": true, "rarity": 0.6 },
+        { "symbol": "ɗ", "name": "voiced alveolar implosive", "place": "alveolar", "manner": "implosive", "voiced": true, "rarity": 0.65 },
+        { "symbol": "ʄ", "name": "voiced palatal implosive", "place": "palatal", "manner": "implosive", "voiced": true, "rarity": 0.8 },
+        { "symbol": "ɠ", "name": "voiced velar implosive", "place": "velar", "manner": "implosive", "voiced": true, "rarity": 0.7 },
+        { "symbol": "ʛ", "name": "voiced uvular implosive", "place": "uvular", "manner": "implosive", "voiced": true, "rarity": 0.9 }
+      ]
+    },
+    {
+      "group_name": "Ejectives (Абруптивные / Эйективы)",
+      "sounds": [
+        { "symbol": "pʼ", "name": "bilabial ejective", "place": "bilabial", "manner": "ejective", "voiced": false, "rarity": 0.7 },
+        { "symbol": "tʼ", "name": "alveolar ejective", "place": "alveolar", "manner": "ejective", "voiced": false, "rarity": 0.65 },
+        { "symbol": "kʼ", "name": "velar ejective", "place": "velar", "manner": "ejective", "voiced": false, "rarity": 0.6 },
+        { "symbol": "qʼ", "name": "uvular ejective", "place": "uvular", "manner": "ejective", "voiced": false, "rarity": 0.8 },
+        { "symbol": "sʼ", "name": "alveolar ejective fricative", "place": "alveolar", "manner": "ejective", "voiced": false, "rarity": 0.75 }
+      ]
+    },
+    {
+      "group_name": "Co-articulated (Коартикулированные)",
+      "sounds": [
+        { "symbol": "w", "name": "voiced labial-velar approximant", "place": "labial-velar", "manner": "approximant", "voiced": true, "rarity": 0.2 },
+        { "symbol": "ʍ", "name": "voiceless labial-velar fricative", "place": "labial-velar", "manner": "fricative", "voiced": false, "rarity": 0.85 },
+        { "symbol": "ɥ", "name": "voiced labial-palatal approximant", "place": "labial-palatal", "manner": "approximant", "voiced": true, "rarity": 0.9 },
+        { "symbol": "ɧ", "name": "sj-sound", "place": "palatal-velar", "manner": "fricative", "voiced": false, "rarity": 0.95 }
+      ]
+    }
+  ],
+  "vowels": [
+    {
+      "group_name": "Close Vowels (Верхний подъем)",
+      "sounds": [
+        { "symbol": "i", "name": "close front unrounded vowel", "height": "close", "backness": "front", "rounded": false, "rarity": 0.05 },
+        { "symbol": "y", "name": "close front rounded vowel", "height": "close", "backness": "front", "rounded": true, "rarity": 0.4 },
+        { "symbol": "ɨ", "name": "close central unrounded vowel", "height": "close", "backness": "central", "rounded": false, "rarity": 0.5 },
+        { "symbol": "ʉ", "name": "close central rounded vowel", "height": "close", "backness": "central", "rounded": true, "rarity": 0.6 },
+        { "symbol": "ɯ", "name": "close back unrounded vowel", "height": "close", "backness": "back", "rounded": false, "rarity": 0.6 },
+        { "symbol": "u", "name": "close back rounded vowel", "height": "close", "backness": "back", "rounded": true, "rarity": 0.05 }
+      ]
+    },
+    {
+      "group_name": "Near-close Vowels (Ненапряженные верхние)",
+      "sounds": [
+        { "symbol": "ɪ", "name": "near-close near-front unrounded vowel", "height": "near-close", "backness": "front", "rounded": false, "rarity": 0.3 },
+        { "symbol": "ʏ", "name": "near-close near-front rounded vowel", "height": "near-close", "backness": "front", "rounded": true, "rarity": 0.5 },
+        { "symbol": "ʊ", "name": "near-close near-back rounded vowel", "height": "near-close", "backness": "back", "rounded": true, "rarity": 0.3 }
+      ]
+    },
+    {
+      "group_name": "Close-mid Vowels (Средне-верхний подъем)",
+      "sounds": [
+        { "symbol": "e", "name": "close-mid front unrounded vowel", "height": "close-mid", "backness": "front", "rounded": false, "rarity": 0.15 },
+        { "symbol": "ø", "name": "close-mid front rounded vowel", "height": "close-mid", "backness": "front", "rounded": true, "rarity": 0.5 },
+        { "symbol": "ɘ", "name": "close-mid central unrounded vowel", "height": "close-mid", "backness": "central", "rounded": false, "rarity": 0.7 },
+        { "symbol": "ɵ", "name": "close-mid central rounded vowel", "height": "close-mid", "backness": "central", "rounded": true, "rarity": 0.7 },
+        { "symbol": "ɤ", "name": "close-mid back unrounded vowel", "height": "close-mid", "backness": "back", "rounded": false, "rarity": 0.7 },
+        { "symbol": "o", "name": "close-mid back rounded vowel", "height": "close-mid", "backness": "back", "rounded": true, "rarity": 0.15 }
+      ]
+    },
+    {
+      "group_name": "Mid Vowels (Средний подъем)",
+      "sounds": [
+        { "symbol": "ə", "name": "mid central vowel (schwa)", "height": "mid", "backness": "central", "rounded": false, "rarity": 0.1 }
+      ]
+    },
+    {
+      "group_name": "Open-mid Vowels (Средне-нижний подъем)",
+      "sounds": [
+        { "symbol": "ɛ", "name": "open-mid front unrounded vowel", "height": "open-mid", "backness": "front", "rounded": false, "rarity": 0.2 },
+        { "symbol": "œ", "name": "open-mid front rounded vowel", "height": "open-mid", "backness": "front", "rounded": true, "rarity": 0.5 },
+        { "symbol": "ɜ", "name": "open-mid central unrounded vowel", "height": "open-mid", "backness": "central", "rounded": false, "rarity": 0.4 },
+        { "symbol": "ɞ", "name": "open-mid central rounded vowel", "height": "open-mid", "backness": "central", "rounded": true, "rarity": 0.8 },
+        { "symbol": "ʌ", "name": "open-mid back unrounded vowel", "height": "open-mid", "backness": "back", "rounded": false, "rarity": 0.4 },
+        { "symbol": "ɔ", "name": "open-mid back rounded vowel", "height": "open-mid", "backness": "back", "rounded": true, "rarity": 0.2 }
+      ]
+    },
+    {
+      "group_name": "Near-open Vowels (Почти нижний подъем)",
+      "sounds": [
+        { "symbol": "æ", "name": "near-open front unrounded vowel", "height": "near-open", "backness": "front", "rounded": false, "rarity": 0.3 },
+        { "symbol": "ɐ", "name": "near-open central vowel", "height": "near-open", "backness": "central", "rounded": false, "rarity": 0.4 }
+      ]
+    },
+    {
+      "group_name": "Open Vowels (Нижний подъем)",
+      "sounds": [
+        { "symbol": "a", "name": "open front unrounded vowel", "height": "open", "backness": "front", "rounded": false, "rarity": 0.05 },
+        { "symbol": "ɶ", "name": "open front rounded vowel", "height": "open", "backness": "front", "rounded": true, "rarity": 0.95 },
+        { "symbol": "ɑ", "name": "open back unrounded vowel", "height": "open", "backness": "back", "rounded": false, "rarity": 0.3 },
+        { "symbol": "ɒ", "name": "open back rounded vowel", "height": "open", "backness": "back", "rounded": true, "rarity": 0.6 }
+      ]
+    }
+  ],
+  "modifiers": [
+    {
+      "group_name": "Suprasegmentals (Супрасегментные)",
+      "description": "Stress, length, and breaks.",
+      "signs": [
+        { "symbol": "ˈ", "name": "primary stress", "function": "stress", "position": "pre-syllable" },
+        { "symbol": "ˌ", "name": "secondary stress", "function": "stress", "position": "pre-syllable" },
+        { "symbol": "ː", "name": "long", "function": "length", "position": "post-phoneme", "example": "aː" },
+        { "symbol": "ˑ", "name": "half-long", "function": "length", "position": "post-phoneme", "example": "eˑ" },
+        { "symbol": ".", "name": "syllable break", "function": "break", "position": "between-phonemes" },
+        { "symbol": "|", "name": "minor (foot) group", "function": "break", "position": "intonation" },
+        { "symbol": "||", "name": "major (intonation) group", "function": "break", "position": "intonation" }
+      ]
+    },
+    {
+      "group_name": "Tones & Word Accents (Тоны)",
+      "description": "Pitch variation affecting meaning (e.g., Mandarin, Thai).",
+      "signs": [
+        { "symbol": "˥", "name": "extra high", "type": "level_tone", "value": 5 },
+        { "symbol": "˦", "name": "high", "type": "level_tone", "value": 4 },
+        { "symbol": "˧", "name": "mid", "type": "level_tone", "value": 3 },
+        { "symbol": "˨", "name": "low", "type": "level_tone", "value": 2 },
+        { "symbol": "˩", "name": "extra low", "type": "level_tone", "value": 1 },
+        { "symbol": "꜖", "name": "low rising", "type": "contour_tone" },
+        { "symbol": "꜒", "name": "high rising", "type": "contour_tone" },
+        { "symbol": "꜔", "name": "falling", "type": "contour_tone" }
+      ]
+    },
+    {
+      "group_name": "Diacritics (Диакритики)",
+      "description": "Marks that change the pronunciation of a letter.",
+      "signs": [
+        { "symbol": "̥", "name": "voiceless", "function": "phonation", "combining": true, "example": "n̥" },
+        { "symbol": "̬", "name": "voiced", "function": "phonation", "combining": true, "example": "s̬" },
+        { "symbol": "ʰ", "name": "aspirated", "function": "release", "combining": false, "position": "superscript", "example": "tʰ" },
+        { "symbol": "ʲ", "name": "palatalized", "function": "secondary_articulation", "combining": false, "position": "superscript", "example": "tʲ" },
+        { "symbol": "ʷ", "name": "labialized", "function": "secondary_articulation", "combining": false, "position": "superscript", "example": "kʷ" },
+        { "symbol": "̃", "name": "nasalized", "function": "nasality", "combining": true, "example": "ã" },
+        { "symbol": "˞", "name": "rhoticity", "function": "r-coloring", "combining": true, "example": "ɚ" },
+        { "symbol": "̈", "name": "centralized", "function": "articulation", "combining": true, "example": "ë" }
+      ]
+    }
+  ]
+}
