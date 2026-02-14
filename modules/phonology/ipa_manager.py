@@ -38,8 +38,8 @@ class IPAManager:
     def _load_json(self, path):
         if not os.path.exists(path):
             raise FileNotFoundError(f"Database not found: {path}")
-        with open(path, 'r', encoding='utf-8') as f:
-            return json.load(f)
+        with open(path, 'r', encoding='utf-8') as ipa:
+            return json.load(ipa)
 
     def _parse_db(self):
         """Превращает вложенный JSON в удобные плоские списки"""
