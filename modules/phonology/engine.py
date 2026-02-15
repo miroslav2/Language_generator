@@ -27,7 +27,7 @@ class PhonologyGenerator:
         profile.vowels = vowels
         return profile
 
-    def auto_generate_inventory(self, complexity: float = 0.3) -> PhonologyProfile:
+    def auto_generate_inventory(self, num_consonants: int, num_vowels: int, complexity: float = 0.3) -> PhonologyProfile:
         """
         complexity: 0.0 (только самые простые звуки) -> 1.0 (полный хаос и кликсы)
         """
@@ -35,13 +35,11 @@ class PhonologyGenerator:
         
         # 1. Определяем размер инвентаря (чем сложнее, тем больше звуков, обычно)
         # В среднем языке ~20-25 согласных и ~5-6 гласных
-        num_consonants = int(15 + (complexity * 20)) # от 15 до 35
-        num_vowels = int(3 + (complexity * 10))      # от 3 до 13
         
         # 2. Выбираем СОГЛАСНЫЕ
         # Фильтруем базу: берем только те звуки, чья редкость <= complexity + небольшой запас
         # Например, если complexity 0.1, мы не возьмем кликсы (rarity 0.9)
-        threshold = complexity + 0.2
+        threshold = complexity + 0.05
         if threshold > 1.0: threshold = 1.0
         
         available_cons = [c for c in self.ipa.all_consonants if c.get('rarity', 1.0) <= threshold]
@@ -51,7 +49,7 @@ class PhonologyGenerator:
         selected_cons_data = random.sample(available_cons, count_c)
         
         # Превращаем словари в объекты PhonemeObject
-        profile.consonants = [PhonemeObject(d['symbol'], d) for d in selected_cons_data]
+        profile.consonants = [PhonemeObject(d['symbol']) for d in selected_cons_data]
 
         # 3. Выбираем ГЛАСНЫЕ
         # Для гласных всегда берем базу (a, i, u), если они доступны
@@ -74,6 +72,6 @@ class PhonologyGenerator:
         
         final_vowels_data += random.sample(available_vowels, count_v)
         
-        profile.vowels = [PhonemeObject(d['symbol'], d) for d in final_vowels_data]
+        profile.vowels = [PhonemeObject(d['symbol']) for d in final_vowels_data]
         
         return profile

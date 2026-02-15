@@ -12,10 +12,6 @@ class PhonemeObject:
     def add_modifier(self, modifier_symbol: list) -> str:
         """Добавляет диакритику, тон или знак долготы"""
         return self.base + "".join(modifier_symbol)
-    
-    def add_modifier(self, modifier_symbol: str) -> str:
-        """Добавляет диакритику, тон или знак долготы"""
-        return self.base + modifier_symbol
 
     def __repr__(self):
         return self.base

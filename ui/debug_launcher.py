@@ -63,20 +63,20 @@ class DebugRunner:
         
         # Берем звук 'n' для опытов
         n_data = ipa.get_consonants(place="alveolar", manner="nasal")[0]
-        my_sound = PhonemeObject(n_data['symbol'], n_data)
+        my_sound = PhonemeObject(n_data['symbol'])
         
         print(f"Базовый звук: /{my_sound}/")
         
         # 1. Оглушаем (добавляем кружочек снизу)
         voiceless_sym = ipa.get_modifier("voiceless")
         if voiceless_sym:
-            my_sound.add_modifier(voiceless_sym)
+            my_sound.add_modifier(list(voiceless_sym))
             print(f" + Оглушение: /{my_sound}/ (n̥)")
         
         # 2. Делаем долгим
         long_sym = ipa.get_modifier("long")
         if long_sym:
-            my_sound.add_modifier(long_sym)
+            my_sound.add_modifier(list(long_sym))
             print(f" + Долгота:   /{my_sound}/ (n̥ː)")
 
         # --- ТЕСТ 3: ТОНЫ ---
@@ -110,7 +110,8 @@ class DebugRunner:
             print("1. Примитивный (Полинезийский стиль) - Complexity 0.1")
             print("2. Стандартный (Европейский стиль)   - Complexity 0.4")
             print("3. Экзотический (Ксено/Африканский)  - Complexity 0.9")
-            print("4. Свой набор")
+            print("4. Настраиваемый")
+            print("5. Свой набор")
             print("0. Назад")
             
             choice = input(">>> ")
@@ -121,6 +122,9 @@ class DebugRunner:
             elif choice == "2": complexity = 0.4
             elif choice == "3": complexity = 0.9
             elif choice == "4":
+                
+                complexity = float(input("Введите желаемую сложность языка (от 0.00 до 1.00) >> "))
+            elif choice == "5":
                 consonants = input("введите согласные звуки через пробел >> ").split()
                 vowels = input("введите гласные звуки через пробел >> ").split()
                 profile = generator.generate_inventory(consonants, vowels)
@@ -132,9 +136,14 @@ class DebugRunner:
                 continue
             else: continue
             
+            num_consonants = int(input("Введите желаемое количество согласных в языке >> "))
+            num_vowels = int(input("Введите желаемое количество гласных в языке >> "))
+            
             print(f"\nГенерируем язык со сложностью {complexity}...")
-            profile = generator.auto_generate_inventory(complexity)
+            profile = generator.auto_generate_inventory(num_consonants, num_vowels, complexity)
             
             print("="*40)
             print(profile)
             print("="*40)
+            
+            input("\n[Нажмите Enter для возврата в меню...]")
