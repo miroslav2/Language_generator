@@ -113,6 +113,7 @@ class DebugRunner:
             print("4. Настраиваемый")
             print("5. Свой набор")
             print("6. Настройка генератора")
+            print("7. Список всех групп")
             print("0. Назад")
             
             choice = input(">>> ")
@@ -136,20 +137,25 @@ class DebugRunner:
 
                 continue
             elif choice == "6":
-                excluded_consonants_groups = []
-                excluded_vowels_groups = []
+                allowed_consonants_groups = []
+                allowed_vowels_groups = []
                 consonants_groups, vowels_goups = generator.get_available_groups()
                 print("вкл\выкл групп согласных:")
                 for c in consonants_groups:
-                    if input(f"Включить группу {c} (Y\\n) >> ") == "n":
-                        excluded_consonants_groups.append(c)
+                    if input(f"Включить группу {c} (Y\\n) >> ") == "Y":
+                        allowed_consonants_groups.append(c)
                 
                 print("вкл\выкл групп гласных:")
                 for v in vowels_goups:
-                    if input(f"Включить группу {v} (Y\\n) >> ") == "n":
-                        excluded_vowels_groups.append(v)
+                    if input(f"Включить группу {v} (Y\\n) >> ") == "Y":
+                        allowed_vowels_groups.append(v)
                 
-                generator.set_excluded_grups((excluded_consonants_groups, excluded_vowels_groups))
+                generator.set_allowed_groups((allowed_consonants_groups, allowed_vowels_groups))
+                continue
+            elif choice == "7":
+                c, v = generator.get_available_groups()
+                print(f"\nСписок групп согласных >> {c}\n\nСписок групп гласных >> {v}")
+                input("\n[Нажмите Enter для возврата в меню...]")
                 continue
             else: continue
             
