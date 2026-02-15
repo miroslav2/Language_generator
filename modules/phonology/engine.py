@@ -20,6 +20,23 @@ class PhonologyGenerator:
     """
     def __init__(self, ipa_manager: IPAManager):
         self.ipa = ipa_manager
+        self.excluded_consonants_groups = []
+        self.excluded_vowels_groups = []
+    
+    def get_available_groups(self) -> tuple[list, list]:
+        """Вспомогательный метод: возвращает список всех групп из базы (для UI)"""
+        consonants_groups = set()
+        vowels_groups = set()
+        # Собираем группы из всех согласных
+        for c in self.ipa.all_consonants:
+            if 'group' in c:
+                consonants_groups.add(c['group'])
+        
+        for v in self.ipa.all_vowels:
+            if 'group' in v:
+                vowels_groups.add(v['group'])
+        
+        return (sorted(list(consonants_groups)), sorted(list(vowels_groups)))
 
     def generate_inventory(self, consonants: list, vowels: list) -> PhonologyProfile:
         profile = PhonologyProfile()
@@ -42,7 +59,7 @@ class PhonologyGenerator:
         threshold = complexity + 0.05
         if threshold > 1.0: threshold = 1.0
         
-        available_cons = [c for c in self.ipa.all_consonants if c.get('rarity', 1.0) <= threshold]
+        available_cons = [c for c in self.ipa.all_consonants if c.get('rarity', 1.0) <= threshold and not(c.get('group') in self.excluded_consonants_groups)]
         
         # Если доступных меньше, чем хотим - берем сколько есть
         count_c = min(len(available_cons), num_consonants)
@@ -53,18 +70,23 @@ class PhonologyGenerator:
 
         # 3. Выбираем ГЛАСНЫЕ
         # Для гласных всегда берем базу (a, i, u), если они доступны
-        available_vowels = [v for v in self.ipa.all_vowels if v.get('rarity', 1.0) <= threshold]
+        available_vowels = [v for v in self.ipa.all_vowels if v.get('rarity', 1.0) <= threshold and not(v.get('group') in self.excluded_vowels_groups)]
         
-        # Гарантируем наличие a, i, u (треугольник гласных), если сложность низкая
+        # Гарантируем (почти) наличие a, i, u
         must_have = ['a', 'i', 'u']
         final_vowels_data = []
         
         for symbol in must_have:
             # Ищем звук в доступных
             found = next((v for v in available_vowels if v['symbol'] == symbol), None)
+            
             if found:
-                final_vowels_data.append(found)
-                available_vowels.remove(found) # Чтобы не дублировать
+                # 80% шанс добавить "базовый" гласный
+                # Если выпало > 0.8, мы его пропускаем (рискуем остаться без 'u')
+                if random.random() < 0.8:
+                    final_vowels_data.append(found)
+                    if found in available_vowels:
+                        available_vowels.remove(found)
         
         # Добираем остальные случайно
         remaining_count = max(0, num_vowels - len(final_vowels_data))
@@ -75,3 +97,6 @@ class PhonologyGenerator:
         profile.vowels = [PhonemeObject(d['symbol']) for d in final_vowels_data]
         
         return profile
+    
+    def set_excluded_grups(self, excluded: tuple[list, list]):
+        self.excluded_consonants_groups, self.excluded_vowels_groups = excluded

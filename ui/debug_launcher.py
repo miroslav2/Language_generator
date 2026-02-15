@@ -112,6 +112,7 @@ class DebugRunner:
             print("3. Экзотический (Ксено/Африканский)  - Complexity 0.9")
             print("4. Настраиваемый")
             print("5. Свой набор")
+            print("6. Настройка генератора")
             print("0. Назад")
             
             choice = input(">>> ")
@@ -133,6 +134,22 @@ class DebugRunner:
                 print(profile)
                 print("="*40)
 
+                continue
+            elif choice == "6":
+                excluded_consonants_groups = []
+                excluded_vowels_groups = []
+                consonants_groups, vowels_goups = generator.get_available_groups()
+                print("вкл\выкл групп согласных:")
+                for c in consonants_groups:
+                    if input(f"Включить группу {c} (Y\\n) >> ") == "n":
+                        excluded_consonants_groups.append(c)
+                
+                print("вкл\выкл групп гласных:")
+                for v in vowels_goups:
+                    if input(f"Включить группу {v} (Y\\n) >> ") == "n":
+                        excluded_vowels_groups.append(v)
+                
+                generator.set_excluded_grups((excluded_consonants_groups, excluded_vowels_groups))
                 continue
             else: continue
             
