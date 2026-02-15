@@ -21,7 +21,13 @@ class PhonologyGenerator:
     def __init__(self, ipa_manager: IPAManager):
         self.ipa = ipa_manager
 
-    def generate_inventory(self, complexity: float = 0.3) -> PhonologyProfile:
+    def generate_inventory(self, consonants: list, vowels: list) -> PhonologyProfile:
+        profile = PhonologyProfile()
+        profile.consonants = consonants
+        profile.vowels = vowels
+        return profile
+
+    def auto_generate_inventory(self, complexity: float = 0.3) -> PhonologyProfile:
         """
         complexity: 0.0 (только самые простые звуки) -> 1.0 (полный хаос и кликсы)
         """

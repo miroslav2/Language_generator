@@ -6,22 +6,19 @@ class PhonemeObject:
     """
     Объект, представляющий конкретный звук с его модификаторами.
     """
-    def __init__(self, base_symbol: str, features: dict):
+    def __init__(self, base_symbol: str):
         self.base = base_symbol
-        self.features = features # {'voiced': True, 'place': 'velar'...}
-        self.modifiers = []      # Список диакритик
 
-    def add_modifier(self, modifier_symbol: str):
+    def add_modifier(self, modifier_symbol: list) -> str:
         """Добавляет диакритику, тон или знак долготы"""
-        self.modifiers.append(modifier_symbol)
-
-    def render(self) -> str:
-        """Собирает звук в строку (база + все значки)"""
-        # Склеиваем базу и все модификаторы в одну строку
-        return self.base + "".join(self.modifiers)
+        return self.base + "".join(modifier_symbol)
+    
+    def add_modifier(self, modifier_symbol: str) -> str:
+        """Добавляет диакритику, тон или знак долготы"""
+        return self.base + modifier_symbol
 
     def __repr__(self):
-        return self.render()
+        return self.base
 
 
 class IPAManager:

@@ -110,6 +110,7 @@ class DebugRunner:
             print("1. Примитивный (Полинезийский стиль) - Complexity 0.1")
             print("2. Стандартный (Европейский стиль)   - Complexity 0.4")
             print("3. Экзотический (Ксено/Африканский)  - Complexity 0.9")
+            print("4. Свой набор")
             print("0. Назад")
             
             choice = input(">>> ")
@@ -119,10 +120,20 @@ class DebugRunner:
             elif choice == "1": complexity = 0.1
             elif choice == "2": complexity = 0.4
             elif choice == "3": complexity = 0.9
+            elif choice == "4":
+                consonants = input("введите согласные звуки через пробел >> ").split()
+                vowels = input("введите гласные звуки через пробел >> ").split()
+                profile = generator.generate_inventory(consonants, vowels)
+            
+                print("="*40)
+                print(profile)
+                print("="*40)
+
+                continue
             else: continue
             
             print(f"\nГенерируем язык со сложностью {complexity}...")
-            profile = generator.generate_inventory(complexity)
+            profile = generator.auto_generate_inventory(complexity)
             
             print("="*40)
             print(profile)
