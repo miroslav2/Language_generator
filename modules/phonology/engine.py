@@ -100,3 +100,29 @@ class PhonologyGenerator:
                 vowels_groups.add(v['group'])
         
         return (sorted(list(consonants_groups)), sorted(list(vowels_groups)))
+    
+    def get_all_sounds(self) -> tuple[list, list]:
+        consonants = [c['symbol'] for c in self.ipa.all_consonants]
+        vowels = [v['symbol'] for v in self.ipa.all_vowels]
+        return (consonants, vowels)
+
+    def get_groupped_all_sounds(self) -> tuple[dict, dict]:
+        grouped_consonants_sounds = {}
+        grouped_vowels_sounds = {}
+        for c in self.ipa.all_consonants:
+            group_name = c.get('group', 'unknown')
+            consonants = c['symbol']
+            if group_name not in grouped_consonants_sounds:
+                grouped_consonants_sounds[group_name] = []
+            grouped_consonants_sounds[group_name].append(consonants)
+        
+        for v in self.ipa.all_vowels:
+            group_name = v.get('group', 'unknown')
+            vowels = v['symbol']
+            if group_name not in grouped_vowels_sounds:
+                grouped_vowels_sounds[group_name] = []
+            grouped_vowels_sounds[group_name].append(vowels)
+        return (grouped_consonants_sounds, grouped_vowels_sounds)
+
+    def get_allowed_sounds(self):
+        pass

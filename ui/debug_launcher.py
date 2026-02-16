@@ -114,6 +114,9 @@ class DebugRunner:
             print("5. Свой набор")
             print("6. Настройка генератора")
             print("7. Список всех групп")
+            print("8. Список всех звуков")
+            print("9. Список всех звуков по группам")
+            print("10. Список разрешённых звуков")
             print("0. Назад")
             
             choice = input(">>> ")
@@ -155,6 +158,28 @@ class DebugRunner:
             elif choice == "7":
                 c, v = generator.get_available_groups()
                 print(f"\nСписок групп согласных >> {c}\n\nСписок групп гласных >> {v}")
+                input("\n[Нажмите Enter для возврата в меню...]")
+                continue
+            elif choice == "8":
+                c, v = generator.get_all_sounds()
+                print(f"\nСписок всех согласных >> {c}\n\nСписок всех гласных >> {v}")
+                input("\n[Нажмите Enter для возврата в меню...]")
+                continue
+            elif choice == "9":
+                c_dict, v_dict = generator.get_groupped_all_sounds()
+
+                c_dict, v_dict = generator.get_groupped_all_sounds()
+
+                print(f"\n--- СПИСОК ВСЕХ СОГЛАСНЫХ ПО ГРУППАМ ---")
+                # c_dict.items() вернет пары ("Plosives", ['p', 't'...])
+                # sorted( ... ) отсортирует по алфавиту имен групп
+                for group_name, sounds in sorted(c_dict.items()):
+                    print(f"\n{group_name}:\n{', '.join(sounds)}")
+
+                print(f"\n--- СПИСОК ВСЕХ ГЛАСНЫХ ПО ГРУППАМ ---")
+                for group_name, sounds in sorted(v_dict.items()):
+                    print(f"\n{group_name}:\n{', '.join(sounds)}")
+                
                 input("\n[Нажмите Enter для возврата в меню...]")
                 continue
             else: continue
