@@ -143,6 +143,7 @@ class DebugRunner:
                 allowed_consonants_groups = []
                 allowed_vowels_groups = []
                 consonants_groups, vowels_goups = generator.get_available_groups()
+                complexity = float(input("Введите сложность языка (0.00 - 1.00) >> "))
                 print("вкл\выкл групп согласных:")
                 for c in consonants_groups:
                     if input(f"Включить группу {c} (Y\\n) >> ") == "Y":
@@ -153,6 +154,7 @@ class DebugRunner:
                     if input(f"Включить группу {v} (Y\\n) >> ") == "Y":
                         allowed_vowels_groups.append(v)
                 
+                generator.set_complexity(complexity)
                 generator.set_allowed_groups((allowed_consonants_groups, allowed_vowels_groups))
                 continue
             elif choice == "7":
@@ -180,6 +182,11 @@ class DebugRunner:
                 for group_name, sounds in sorted(v_dict.items()):
                     print(f"\n{group_name}:\n{', '.join(sounds)}")
                 
+                input("\n[Нажмите Enter для возврата в меню...]")
+                continue
+            elif choice == "10":
+                c, v = generator.get_allowed_sounds()
+                print(f"\nСписок допустимых согласных >> {c}\n\nСписок допустимых гласных >> {v}")
                 input("\n[Нажмите Enter для возврата в меню...]")
                 continue
             else: continue

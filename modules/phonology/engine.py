@@ -20,6 +20,7 @@ class PhonologyGenerator:
     """
     def __init__(self, ipa_manager: IPAManager):
         self.ipa = ipa_manager
+        self.complexity = 0.3
         self.allowed_consonants_groups = ['Approximants (Аппроксиманты)', 'Clicks (Щелкающие / Кликсы)', 'Co-articulated (Коартикулированные)', 'Ejectives (Абруптивные / Эйективы)', 'Fricatives (Фрикативные/Щелевые)', 'Implosives (Имплозивные)', 'Lateral Approximants (Боковые)', 'Lateral Fricatives (Боковые фрикативные)', 'Nasals (Носовые)', 'Plosives (Взрывные)', 'Trills & Taps (Дрожащие и Одноударные)']
         self.allowed_vowels_groups = ['Close Vowels (Верхний подъем)', 'Close-mid Vowels (Средне-верхний подъем)', 'Mid Vowels (Средний подъем)', 'Near-close Vowels (Ненапряженные верхние)', 'Near-open Vowels (Почти нижний подъем)', 'Open Vowels (Нижний подъем)', 'Open-mid Vowels (Средне-нижний подъем)']
 
@@ -38,13 +39,7 @@ class PhonologyGenerator:
         # 1. Определяем размер инвентаря (чем сложнее, тем больше звуков, обычно)
         # В среднем языке ~20-25 согласных и ~5-6 гласных
         
-        # 2. Выбираем СОГЛАСНЫЕ
-        # Фильтруем базу: берем только те звуки, чья редкость <= complexity + небольшой запас
-        # Например, если complexity 0.1, мы не возьмем кликсы (rarity 0.9)
-        threshold = complexity + 0.05
-        if threshold > 1.0: threshold = 1.0
-        
-        available_cons = [c for c in self.ipa.all_consonants if c.get('rarity', 1.0) <= threshold and c.get('group') in self.allowed_consonants_groups]
+        available_cons = [c for c in self.ipa.all_consonants if c.get('rarity', 1.0) <= complexity and c.get('group') in self.allowed_consonants_groups]
         
         # Если доступных меньше, чем хотим - берем сколько есть
         count_c = min(len(available_cons), num_consonants)
@@ -55,7 +50,7 @@ class PhonologyGenerator:
 
         # 3. Выбираем ГЛАСНЫЕ
         # Для гласных всегда берем базу (a, i, u), если они доступны
-        available_vowels = [v for v in self.ipa.all_vowels if v.get('rarity', 1.0) <= threshold and v.get('group') in self.allowed_vowels_groups]
+        available_vowels = [v for v in self.ipa.all_vowels if v.get('rarity', 1.0) <= complexity and v.get('group') in self.allowed_vowels_groups]
         
         # Гарантируем (почти) наличие a, i, u
         must_have = ['a', 'i', 'u']
@@ -85,6 +80,9 @@ class PhonologyGenerator:
     
     def set_allowed_groups(self, allowed: tuple[list, list]):
         self.allowed_consonants_groups, self.allowed_vowels_groups = allowed
+
+    def set_complexity(self, complexity: float):
+        self.complexity = complexity
     
     def get_available_groups(self) -> tuple[list, list]:
         """Вспомогательный метод: возвращает список всех групп из базы (для UI)"""
@@ -124,5 +122,7 @@ class PhonologyGenerator:
             grouped_vowels_sounds[group_name].append(vowels)
         return (grouped_consonants_sounds, grouped_vowels_sounds)
 
-    def get_allowed_sounds(self):
-        pass
+    def get_allowed_sounds(self) -> tuple[list, list]:
+        consonants = [c['symbol'] for c in self.ipa.all_consonants if c.get('rarity', 1.0) <= self.complexity and c.get('group') in self.allowed_consonants_groups]
+        vowels = [v['symbol'] for v in self.ipa.all_vowels if v.get('rarity', 1.0) <= self.complexity and v.get('group') in self.allowed_vowels_groups]
+        return (consonants, vowels)
