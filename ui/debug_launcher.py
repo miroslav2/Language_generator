@@ -124,9 +124,9 @@ class DebugRunner:
             
             complexity = 0.3
             if choice == "0": break
-            elif choice == "1": complexity = 0.1
-            elif choice == "2": complexity = 0.4
-            elif choice == "3": complexity = 0.9
+            elif choice == "1": generator.set_complexity(complexity)
+            elif choice == "2": generator.set_complexity(complexity)
+            elif choice == "3": generator.set_complexity(complexity)
             elif choice == "4":
                 
                 complexity = float(input("Введите желаемую сложность языка (от 0.00 до 1.00) >> "))
@@ -196,7 +196,7 @@ class DebugRunner:
             num_vowels = int(input("Введите желаемое количество гласных в языке >> "))
             
             print(f"\nГенерируем язык со сложностью {complexity}...")
-            profile = generator.auto_generate_inventory(num_consonants, num_vowels, complexity)
+            profile = generator.auto_generate_inventory(num_consonants, num_vowels)
             
             print("="*40)
             print(profile)

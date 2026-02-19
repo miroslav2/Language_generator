@@ -6,8 +6,8 @@ class PhonologyProfile:
     Хранит выбранный набор звуков для конкретного языка.
     """
     def __init__(self):
-        self.consonants = []
-        self.vowels = []
+        self.consonants: list[PhonemeObject] = []
+        self.vowels: list[PhonemeObject] = []
     
     def __repr__(self):
         c_str = ", ".join([str(p) for p in self.consonants])
@@ -30,7 +30,7 @@ class PhonologyGenerator:
         profile.vowels = vowels
         return profile
 
-    def auto_generate_inventory(self, num_consonants: int, num_vowels: int, complexity: float = 0.3) -> PhonologyProfile:
+    def auto_generate_inventory(self, num_consonants: int, num_vowels: int) -> PhonologyProfile:
         """
         complexity: 0.0 (только самые простые звуки) -> 1.0 (полный хаос и кликсы)
         """
@@ -39,18 +39,18 @@ class PhonologyGenerator:
         # 1. Определяем размер инвентаря (чем сложнее, тем больше звуков, обычно)
         # В среднем языке ~20-25 согласных и ~5-6 гласных
         
-        available_cons = [c for c in self.ipa.all_consonants if c.get('rarity', 1.0) <= complexity and c.get('group') in self.allowed_consonants_groups]
+        available_cons = [c for c in self.ipa.all_consonants if c.get('rarity', 1.0) <= self.complexity and c.get('group') in self.allowed_consonants_groups]
         
         # Если доступных меньше, чем хотим - берем сколько есть
         count_c = min(len(available_cons), num_consonants)
         selected_cons_data = random.sample(available_cons, count_c)
         
         # Превращаем словари в объекты PhonemeObject
-        profile.consonants = [PhonemeObject(d['symbol']) for d in selected_cons_data]
+        profile.consonants = [PhonemeObject(d) for d in selected_cons_data]
 
         # 3. Выбираем ГЛАСНЫЕ
         # Для гласных всегда берем базу (a, i, u), если они доступны
-        available_vowels = [v for v in self.ipa.all_vowels if v.get('rarity', 1.0) <= complexity and v.get('group') in self.allowed_vowels_groups]
+        available_vowels = [v for v in self.ipa.all_vowels if v.get('rarity', 1.0) <= self.complexity and v.get('group') in self.allowed_vowels_groups]
         
         # Гарантируем (почти) наличие a, i, u
         must_have = ['a', 'i', 'u']
@@ -74,7 +74,7 @@ class PhonologyGenerator:
         
         final_vowels_data += random.sample(available_vowels, count_v)
         
-        profile.vowels = [PhonemeObject(d['symbol']) for d in final_vowels_data]
+        profile.vowels = [PhonemeObject(d) for d in final_vowels_data]
         
         return profile
     

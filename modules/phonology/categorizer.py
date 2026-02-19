@@ -48,10 +48,8 @@ class Categorizer:
 
     def categorization(self) -> CategoriesObject:
         categories_object = CategoriesObject()
-        ipa = IPAManager()
         for consonant_sound in self.phonology_profile.consonants:
-            consonant_ph = str(consonant_sound)
-            manner = ipa.get_manner_of_sound(consonant_ph)
+            manner = consonant_sound.manner
             if manner in ['plosive', 'implosive', 'ejective', 'click', 'stop']:
                 categories_object.categories['P'].append(consonant_sound)
             if manner in ['nasal']:
@@ -60,7 +58,7 @@ class Categorizer:
                 categories_object.categories['F'].append(consonant_sound)
             if manner in ['approximant', 'lateral', 'lateral approximant', 'trill', 'tap', 'flap']:
                 categories_object.categories['L'].append(consonant_sound)
-            if consonant_ph in ['s', 'z', 'ʃ', 'ʒ', 'ʂ', 'ʐ', 'ɕ', 'ʑ']:
+            if consonant_sound.base in ['s', 'z', 'ʃ', 'ʒ', 'ʂ', 'ʐ', 'ɕ', 'ʑ']:
                 categories_object.categories['S'].append(consonant_sound)
         
         for vowels_sound in self.phonology_profile.vowels:
