@@ -3,6 +3,7 @@ import sys
 # Убедись, что файл modules/phonology/ipa_manager.py существует!
 from modules.phonology.ipa_manager import IPAManager, PhonemeObject
 from modules.phonology.engine import PhonologyGenerator
+from modules.phonology.categorizer import Categorizer
 
 class DebugRunner:
     def run(self):
@@ -200,5 +201,16 @@ class DebugRunner:
             print("="*40)
             print(profile)
             print("="*40)
+
+            print(f"\nКатегоризатор")
+
+            categorizer = Categorizer(profile)
+            categorizer.diphthongs_generator(5)
+            
+            categories = categorizer.categorization()
+            print("="*40)
+            print(categories)
+            print("="*40)
+
             
             input("\n[Нажмите Enter для возврата в меню...]")

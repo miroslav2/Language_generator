@@ -1,0 +1,71 @@
+[
+    {
+      "group": "Basic Open (Открытые)",
+      "templates": [
+        { "pattern": "V",     "weight": 20, "description": "Vowel only (a-tom)" },
+        { "pattern": "CV",    "weight": 100,"description": "Universal syllable (ba, ka, mi)" },
+        { "pattern": "NV",    "weight": 60, "description": "Nasal onset (ma, no)" },
+        { "pattern": "LV",    "weight": 50, "description": "Liquid onset (la, ro)" },
+        { "pattern": "FV",    "weight": 50, "description": "Fricative onset (fa, zo)" },
+        { "pattern": "PV",    "weight": 70, "description": "Plosive onset (pa, da)" }
+      ]
+    },
+    {
+      "group": "Basic Closed (Закрытые)",
+      "templates": [
+        { "pattern": "VC",    "weight": 30, "description": "Vowel start closed (am, it)" },
+        { "pattern": "CVC",   "weight": 80, "description": "Standard closed (cat, dog)" },
+        { "pattern": "CVN",   "weight": 60, "description": "Nasal coda (pan, bin)" },
+        { "pattern": "CVL",   "weight": 50, "description": "Liquid coda (car, ball)" },
+        { "pattern": "CVS",   "weight": 40, "description": "Sibilant coda (bus, ash)" },
+        { "pattern": "CVF",   "weight": 30, "description": "Fricative coda (leaf, math)" },
+        { "pattern": "CVP",   "weight": 40, "description": "Stop coda (bat, top)" }
+      ]
+    },
+    {
+      "group": "Diphthongs (Дифтонги)",
+      "templates": [
+        { "pattern": "D",     "weight": 10, "description": "Pure diphthong (eye, ow)" },
+        { "pattern": "CD",    "weight": 40, "description": "Open diphthong (boy, cow, hi)" },
+        { "pattern": "DC",    "weight": 15, "description": "Diphthong closed (out, oil)" },
+        { "pattern": "CDC",   "weight": 30, "description": "Closed diphthong (loud, coin)" },
+        { "pattern": "CDN",   "weight": 25, "description": "Diphthong + Nasal (down, time)" },
+        { "pattern": "CDL",   "weight": 20, "description": "Diphthong + Liquid (file, our)" }
+      ]
+    },
+    {
+      "group": "Complex Onsets (Стечения в начале)",
+      "templates": [
+        { "pattern": "PLV",   "weight": 30, "description": "Stop + Liquid (play, try, cry)" },
+        { "pattern": "FLV",   "weight": 25, "description": "Fricative + Liquid (fly, throw)" },
+        { "pattern": "sPV",   "weight": 25, "description": "S + Stop (spy, stay, sky)" },
+        { "pattern": "sNV",   "weight": 15, "description": "S + Nasal (snow, small)" },
+        { "pattern": "sLV",   "weight": 10, "description": "S + Liquid (slow, sleep)" },
+        { "pattern": "sFV",   "weight": 5,  "description": "S + Fricative (sphere, svelt)" },
+        { "pattern": "CCV",   "weight": 10, "description": "Generic cluster (gnat, pterodactyl)" }
+      ]
+    },
+    {
+      "group": "Complex Codas (Стечения в конце)",
+      "templates": [
+        { "pattern": "CVst",  "weight": 20, "description": "V + s + Stop (fast, list)" },
+        { "pattern": "CVsk",  "weight": 15, "description": "V + s + Stop (ask, desk)" },
+        { "pattern": "CVft",  "weight": 15, "description": "V + Fric + Stop (lift, left)" },
+        { "pattern": "CVmp",  "weight": 15, "description": "V + Nasal + Stop (lamp, jump)" },
+        { "pattern": "CVnd",  "weight": 20, "description": "V + Nasal + Stop (hand, wind)" },
+        { "pattern": "CVnk",  "weight": 15, "description": "V + Nasal + Stop (bank, think)" },
+        { "pattern": "CVlp",  "weight": 10, "description": "V + Liquid + Stop (help)" },
+        { "pattern": "CVrt",  "weight": 15, "description": "V + Liquid + Stop (cart, port)" }
+      ]
+    },
+    {
+      "group": "Super Complex (Штраус-стайл)",
+      "templates": [
+        { "pattern": "sPLV",  "weight": 10, "description": "S + P + L + V (spray, stray, scream)" },
+        { "pattern": "sPLVC", "weight": 8,  "description": "Full cluster (street, script)" },
+        { "pattern": "CCVCC", "weight": 5,  "description": "Heavy cluster (trusts, plants)" },
+        { "pattern": "CCCDC", "weight": 3,  "description": "Strauss style (S+P+L + Diphthong + C)" },
+        { "pattern": "CCCVCCCC", "weight": 1,"description": "Extreme (strengths)" }
+      ]
+    }
+  ]

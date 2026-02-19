@@ -99,3 +99,9 @@ class IPAManager:
             if val['name'] == name_or_func or val.get('function') == name_or_func:
                 return val['symbol']
         return None
+    
+    def get_manner_of_sound(self, sound: str) -> str:
+        for i in self.all_consonants:
+            if sound == i.get("symbol"):
+                return i.get("manner")
+        return None
