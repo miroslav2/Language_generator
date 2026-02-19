@@ -1,4 +1,4 @@
-from modules.phonology.engine import PhonologyProfile
+from modules.phonology.engine import PhonologyProfile,Diphthongs
 from modules.phonology.ipa_manager import IPAManager
 import random
 
@@ -24,27 +24,26 @@ class CategoriesObject:
 class Categorizer:
     def __init__(self, profile: PhonologyProfile):
         self.phonology_profile = profile
-        self.diphthongs = []
+        self.diphthongs: list[Diphthongs] = []
 
     def diphthongs_generator(self, num_diphthongs: int) -> tuple[str, list]:
-        diphthongs: set[str] = set()
+        diphthongs: set[Diphthongs] = set()
         if len(self.phonology_profile.vowels) >= 2:
             attempts = 0
             max_attempts = 100
             while len(diphthongs) < num_diphthongs and attempts < max_attempts:
                 v1 = random.choice(self.phonology_profile.vowels)
                 v2 = random.choice(self.phonology_profile.vowels)
-                if v1 != v2:
-                    diphthongs.add(str(v1) + str(v2))
+                if v1.base != v2.base:
+                    diphthongs.add(Diphthongs(v1, v2))
                 attempts += 1
         self.diphthongs = list(diphthongs)
         return ('D', list(diphthongs))
 
-
     def individual_diphthongs_generator(self, diphthongs: list[str]) -> tuple[str, list]:
         refactoring_diphthongs = [d for d in diphthongs if len(d) == 2]
-        self.diphthongs = list(refactoring_diphthongs)
-        return ('D', refactoring_diphthongs)
+        self.diphthongs = [Diphthongs(d[0], d[1]) for d in refactoring_diphthongs]
+        return ('D', self.diphthongs)
 
     def categorization(self) -> CategoriesObject:
         categories_object = CategoriesObject()

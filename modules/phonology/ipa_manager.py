@@ -24,6 +24,10 @@ class PhonemeObject:
     @property
     def group(self) -> str:
         return self._data.get('group', '')
+    
+    @property
+    def symbol(self) -> str:
+        return self._data.get('symbol', '')
 
 
 class IPAManager:

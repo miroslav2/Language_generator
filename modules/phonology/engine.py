@@ -14,6 +14,26 @@ class PhonologyProfile:
         v_str = ", ".join([str(p) for p in self.vowels])
         return f"Phonology:\n  Consonants ({len(self.consonants)}): {c_str}\n  Vowels ({len(self.vowels)}): {v_str}"
 
+class Diphthongs:
+    def __init__(self, vowel_1: PhonemeObject, vowel_2: PhonemeObject):
+        self.vowel_1 = vowel_1
+        self.vowel_2 = vowel_2
+
+    def __repr__(self):
+        return f'{self.vowel_1.symbol}{self.vowel_2.symbol}'
+    
+    def __eq__(self, other_diphthong):
+        if isinstance(other_diphthong, Diphthongs):
+            return other_diphthong.vowel_1 == self.vowel_1 and other_diphthong.vowel_2 == self.vowel_2
+        return False
+    
+    def __hash__(self):
+        return hash(str(self.vowel_1) + str(self.vowel_2))
+        
+    @property
+    def base(self):
+        return str(self)
+
 class PhonologyGenerator:
     """
     Отвечает за генерацию инвентаря звуков на основе настроек.
