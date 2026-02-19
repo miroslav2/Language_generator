@@ -27,7 +27,7 @@ class Categorizer:
         self.diphthongs = []
 
     def diphthongs_generator(self, num_diphthongs: int) -> tuple[str, list]:
-        diphthongs = set()
+        diphthongs: set[str] = set()
         if len(self.phonology_profile.vowels) >= 2:
             attempts = 0
             max_attempts = 100
@@ -37,13 +37,13 @@ class Categorizer:
                 if v1 != v2:
                     diphthongs.add(str(v1) + str(v2))
                 attempts += 1
-        self.diphthongs = diphthongs
+        self.diphthongs = list(diphthongs)
         return ('D', list(diphthongs))
 
 
     def individual_diphthongs_generator(self, diphthongs: list[str]) -> tuple[str, list]:
         refactoring_diphthongs = [d for d in diphthongs if len(d) == 2]
-        self.diphthongs = refactoring_diphthongs
+        self.diphthongs = list(refactoring_diphthongs)
         return ('D', refactoring_diphthongs)
 
     def categorization(self) -> CategoriesObject:

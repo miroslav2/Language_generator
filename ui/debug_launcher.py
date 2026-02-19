@@ -124,9 +124,9 @@ class DebugRunner:
             
             complexity = 0.3
             if choice == "0": break
-            elif choice == "1": generator.set_complexity(complexity)
-            elif choice == "2": generator.set_complexity(complexity)
-            elif choice == "3": generator.set_complexity(complexity)
+            elif choice == "1": generator.set_complexity(0.3)
+            elif choice == "2": generator.set_complexity(0.6)
+            elif choice == "3": generator.set_complexity(0.9)
             elif choice == "4":
                 
                 complexity = float(input("Введите желаемую сложность языка (от 0.00 до 1.00) >> "))
