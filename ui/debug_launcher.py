@@ -2,7 +2,7 @@ import sys
 # Импортируем менеджер, который мы только что создали
 # Убедись, что файл modules/phonology/ipa_manager.py существует!
 from modules.phonology.ipa_manager import IPAManager, PhonemeObject
-from modules.phonology.engine import PhonologyGenerator
+from modules.phonology.inventory_generator import PhonologyGenerator
 from modules.phonology.categorizer import Categorizer
 from modules.phonology.syllables import SyllablesManager
 

@@ -1,5 +1,5 @@
-from modules.phonology.categorizer import CategoriesObject
-from modules.phonology.engine import PhonologyProfile, Diphthongs
+from modules.phonology.categorizer import CategoryObject
+from modules.phonology.inventory_generator import PhonologyProfile, Diphthongs
 from modules.phonology.ipa_manager import PhonemeObject
 
 import random
@@ -17,7 +17,7 @@ class SyllablesObject():
         return ''.join([str(obj) for obj in self.syllables])
     
 class SyllablesManager:
-    def __init__(self, categories: CategoriesObject, type_syl: str):
+    def __init__(self, categories: CategoryObject, type_syl: str):
         self.categories = categories
         self.type_syllable = type_syl
 

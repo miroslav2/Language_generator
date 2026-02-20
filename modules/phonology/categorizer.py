@@ -1,8 +1,8 @@
-from modules.phonology.engine import PhonologyProfile,Diphthongs
+from modules.phonology.inventory_generator import PhonologyProfile, Diphthongs
 from modules.phonology.ipa_manager import IPAManager
 import random
 
-class CategoriesObject:
+class CategoryObject:
     def __init__(self):
         self.categories = {
             'C': [], # (Consonants): любой согласный
@@ -46,11 +46,11 @@ class Categorizer:
         self.diphthongs = [Diphthongs(d[0], d[1]) for d in refactoring_diphthongs]
         return ('D', self.diphthongs)
 
-    def categorization(self) -> CategoriesObject:
-        categories_object = CategoriesObject()
+    def categorization(self) -> CategoryObject:
+        categories_object = CategoryObject()
         for consonant_sound in self.phonology_profile.consonants:
             manner = consonant_sound.manner
-            
+
             categories_object.categories['C'].append(consonant_sound)
 
             if manner in ['plosive', 'implosive', 'ejective', 'click', 'stop']:
