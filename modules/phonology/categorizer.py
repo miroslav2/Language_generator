@@ -5,6 +5,7 @@ import random
 class CategoriesObject:
     def __init__(self):
         self.categories = {
+            'C': [], # (Consonants): любой согласный
             'P': [], # (Plosive/Stop): Взрывные
             'F': [], # (Fricative): Фрикативные (Шумные)
             'N': [], # (Nasal): Носовые
@@ -49,6 +50,9 @@ class Categorizer:
         categories_object = CategoriesObject()
         for consonant_sound in self.phonology_profile.consonants:
             manner = consonant_sound.manner
+            
+            categories_object.categories['C'].append(consonant_sound)
+
             if manner in ['plosive', 'implosive', 'ejective', 'click', 'stop']:
                 categories_object.categories['P'].append(consonant_sound)
             if manner in ['nasal']:

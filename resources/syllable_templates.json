@@ -67,5 +67,12 @@
         { "pattern": "CCCDC", "weight": 3,  "description": "Strauss style (S+P+L + Diphthong + C)" },
         { "pattern": "CCCVCCCC", "weight": 1,"description": "Extreme (strengths)" }
       ]
+    },
+    {
+      "group": "Alien/Exotic (Ксено)",
+      "templates": [
+        { "pattern": "C",     "weight": 5,  "description": "Syllabic consonant (shh, mmm)" },
+        { "pattern": "CC",    "weight": 5,  "description": "Geminate/Cluster only (tss)" }
+      ]
     }
   ]

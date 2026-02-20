@@ -4,6 +4,7 @@ import sys
 from modules.phonology.ipa_manager import IPAManager, PhonemeObject
 from modules.phonology.engine import PhonologyGenerator
 from modules.phonology.categorizer import Categorizer
+from modules.phonology.syllables import SyllablesManager
 
 class DebugRunner:
     def run(self):
@@ -16,6 +17,7 @@ class DebugRunner:
             print("1. Тест Фонетики (IPA Database & Modifiers)")
             print("2. Создать новый проект (Пока пусто)")
             print("3. Генератор Инвентаря (Создать набор звуков)")
+            print("4. Генератор слогов")
             print("0. Выход")
             
             cmd = input("\n>>> Ваш выбор: ")
@@ -29,6 +31,8 @@ class DebugRunner:
                 print("Этот функционал еще в разработке.")
             elif cmd == "3":
                 self.test_inventory_generation()
+            elif cmd == "4":
+                self.test_syllable_generation()
             else:
                 print("Неверная команда.")
 
@@ -214,3 +218,79 @@ class DebugRunner:
 
             
             input("\n[Нажмите Enter для возврата в меню...]")
+
+    def test_syllable_generation(self):
+        print("\n--- ТЕСТ ГЕНЕРАЦИИ СЛОГОВ ---")
+        
+        # 1. Готовим инструменты (как в настоящей программе)
+        ipa = IPAManager()
+        gen = PhonologyGenerator(ipa)
+
+        complexity = float(input('\nВведите желаемую сложность языка >> '))
+        gen.set_complexity(complexity)
+
+        num_consonants = int(input("Введите желаемое количество согласных в языке >> "))
+        num_vowels = int(input("Введите желаемое количество гласных в языке >> "))
+        
+        print(f"\nГенерируем язык со сложностью {complexity}...")
+        profile = gen.auto_generate_inventory(num_consonants, num_vowels)
+        
+        print("="*40)
+        print(profile)
+        print("="*40)
+        
+        print("Инвентарь создан.")
+        
+        print(f"\nКатегоризатор")
+
+        num_diphthongs = float(input('\nВведите желаемую количество дифтонгов >> '))
+
+        categorizer = Categorizer(profile)
+        categorizer.diphthongs_generator(num_diphthongs)
+        
+        cats = categorizer.categorization()
+        print("="*40)
+        print(cats)
+        print("="*40)
+           
+        # 3. Генерируем слоги по разным шаблонам
+        print("\nПробуем шаблоны:")
+
+        templates = [
+    # 1. Простые открытые
+    "V", "CV", "NV", "LV", "FV", "PV",
+    
+    # 2. Простые закрытые
+    "VC", "CVC", "CVN", "CVL", "CVS", "CVF", "CVP",
+    
+    # 3. С дифтонгами
+    "D", "CD", "DC", "CDC", "CDN", "CDL", "CDP", "CDF",
+    
+    # 4. Сложные начала (Onsets)
+    "PLV", "FLV", "SLV", "NLV", # Liquid после кого-то
+    "PNV", "FNV", "SNV",        # Nasal после кого-то (pneu, snow)
+    "PFV", "PSV",               # Fricative после Stop (pf, ps)
+    
+    # 5. Кластеры с S (Sibilant)
+    "SPV", "SFV", "SNV", "SLV",
+    "SPLV", "SFLV", # Тройные (stra, spla)
+    
+    # 6. Сложные концы (Codas)
+    "CVSP",                 # st, sk, sp
+    "CVLP", "CVLF", "CVLN", # lp, lf, ln
+    "CVNP", "CVNF", "CVNS", # nt, nf, ns
+    
+    # 7. Монстры
+    "PLVLC", "FLVNC", "SPVLP", "SFLVNS", "CCCVC", "CDC", "C", "CC"
+]
+        
+        for tmpl in templates:
+            manager = SyllablesManager(cats, tmpl)
+            try:
+                # Генерируем 3 примера для каждого шаблона
+                results = [str(manager.syllable_generator()) for _ in range(5)]
+                print(f"Шаблон {tmpl}: {', '.join(results)}")
+            except Exception as e:
+                print(f"Шаблон {tmpl}: Ошибка ({e}) - возможно, нет нужных звуков")
+        
+        input("\n[Нажмите Enter для возврата в меню...]")
