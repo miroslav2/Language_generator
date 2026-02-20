@@ -1,4 +1,5 @@
 import sys
+import random
 # Импортируем менеджер, который мы только что создали
 # Убедись, что файл modules/phonology/ipa_manager.py существует!
 from modules.phonology.ipa_manager import IPAManager, PhonemeObject
@@ -288,7 +289,9 @@ class DebugRunner:
             manager = SyllablesManager(cats, tmpl)
             try:
                 # Генерируем 3 примера для каждого шаблона
-                results = [str(manager.syllable_generator()) for _ in range(5)]
+                syl_objects = [manager.syllable_generator() for _ in range(5)]
+                for syl in syl_objects: syl.set_stress_status(random.choice([True, False]))
+                results = [str(syll) for syll in syl_objects]
                 print(f"Шаблон {tmpl}: {', '.join(results)}")
             except Exception as e:
                 print(f"Шаблон {tmpl}: Ошибка ({e}) - возможно, нет нужных звуков")

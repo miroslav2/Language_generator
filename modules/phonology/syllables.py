@@ -4,17 +4,29 @@ from modules.phonology.ipa_manager import PhonemeObject
 
 import random
 
-class SyllablesObject():
-    def __init__(self, type: str, onset: list[PhonemeObject], nucleus: list[PhonemeObject | Diphthongs], coda: list[PhonemeObject]):
+class SyllableObject():
+    def __init__(self, type: str, has_nucleus: bool, onset: list[PhonemeObject], nucleus: list[PhonemeObject | Diphthongs], coda: list[PhonemeObject]):
         self.onset = onset
         self.nucleus = nucleus
         self.coda = coda
         self.syllables = onset + nucleus + coda
         self.type_syllables = type
         self.len_syllables = len(type)
+        self.has_nucleus = has_nucleus
+        self.is_stressed = False
 
     def __repr__(self):
-        return ''.join([str(obj) for obj in self.syllables])
+        syllable = ''.join([str(obj) for obj in self.syllables])
+        if self.is_stressed:
+            return "ˈ" + syllable
+        else: 
+            return syllable
+    
+    def get_nucleus_status(self):
+        return self.has_nucleus
+    
+    def set_stress_status(self, stress: bool):
+        self.is_stressed = stress
     
 class SyllablesManager:
     def __init__(self, categories: CategoryObject, type_syl: str):
@@ -75,4 +87,4 @@ class SyllablesManager:
             if not possible_nuclei: return None
             nucleus.append(random.choice(possible_nuclei))
 
-        return SyllablesObject(self.type_syllable, onset, nucleus, coda)
+        return SyllableObject(self.type_syllable, has_nucleus, onset, nucleus, coda)
