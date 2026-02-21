@@ -6,6 +6,7 @@ from modules.phonology.ipa_manager import IPAManager, PhonemeObject
 from modules.phonology.inventory_generator import PhonologyGenerator
 from modules.phonology.categorizer import Categorizer
 from modules.phonology.syllables import SyllablesManager
+from modules.phonology.word_phonology import PhoneticWord, WordPhonologyGenerator
 
 class DebugRunner:
     def run(self):
@@ -19,6 +20,7 @@ class DebugRunner:
             print("2. Создать новый проект (Пока пусто)")
             print("3. Генератор Инвентаря (Создать набор звуков)")
             print("4. Генератор слогов")
+            print("5. Генератор слов")
             print("0. Выход")
             
             cmd = input("\n>>> Ваш выбор: ")
@@ -34,6 +36,8 @@ class DebugRunner:
                 self.test_inventory_generation()
             elif cmd == "4":
                 self.test_syllable_generation()
+            elif cmd == "5":
+                self.test_word_generation()
             else:
                 print("Неверная команда.")
 
@@ -295,5 +299,61 @@ class DebugRunner:
                 print(f"Шаблон {tmpl}: {', '.join(results)}")
             except Exception as e:
                 print(f"Шаблон {tmpl}: Ошибка ({e}) - возможно, нет нужных звуков")
+        
+        input("\n[Нажмите Enter для возврата в меню...]")
+        
+    def test_word_generation(self):
+        print("\n--- ТЕСТ ГЕНЕРАЦИИ СЛОВ ---")
+        
+        # 1. Готовим инструменты (как в настоящей программе)
+        ipa = IPAManager()
+        gen = PhonologyGenerator(ipa)
+
+        complexity = float(input('\nВведите желаемую сложность языка >> '))
+        gen.set_complexity(complexity)
+
+        num_consonants = int(input("Введите желаемое количество согласных в языке >> "))
+        num_vowels = int(input("Введите желаемое количество гласных в языке >> "))
+        
+        print(f"\nГенерируем язык со сложностью {complexity}...")
+        profile = gen.auto_generate_inventory(num_consonants, num_vowels)
+        
+        print("="*40)
+        print(profile)
+        print("="*40)
+        
+        print("Инвентарь создан.")
+        
+        print(f"\nКатегоризатор")
+
+        num_diphthongs = float(input('\nВведите желаемую количество дифтонгов >> '))
+
+        categorizer = Categorizer(profile)
+        categorizer.diphthongs_generator(num_diphthongs)
+        
+        categories = categorizer.categorization()
+        print("="*40)
+        print(categories)
+        print("="*40)
+        
+        print("Категории созданы.")
+           
+        # 3. Генерируем слова
+        print("\nГенерируем слова:")
+        num_1 = int(input("Введите желаемое минимальное кол-во слогов >> "))
+        num_2 = int(input("Введите желаемое максимальное кол-во слогов >> "))
+        
+        min_sylables, max_sylables = (min(num_1, num_2), max(num_1, num_2))
+        
+        word_genirator = WordPhonologyGenerator(min_sylables, max_sylables, categories)
+        
+        words = [word_genirator.generate_word() for _ in range(20)]
+            
+        print("="*40)
+        for word in words:
+            print(word)
+        print("="*40)
+        
+        print("Слова созданы.")
         
         input("\n[Нажмите Enter для возврата в меню...]")
