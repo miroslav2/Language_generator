@@ -17,7 +17,7 @@ class PhoneticWord:
             self.stress_index = -1
     
     def __repr__(self):
-        return '.'.join(str(syl) for syl in self.final_word_phonetic)
+        return ''.join(str(syl) for syl in self.final_word_phonetic)
     
     def get_raw_word_phonetic(self) -> str:
         return ''.join(str(syl) for syl in self.raw_word_phonetic)

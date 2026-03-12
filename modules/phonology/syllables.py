@@ -22,11 +22,14 @@ class SyllableObject():
         else: 
             return syllable
     
-    def get_nucleus_status(self):
+    def get_nucleus_status(self) -> bool:
         return self.has_nucleus
     
     def set_stress_status(self, stress: bool):
         self.is_stressed = stress
+
+    def get_phoneme_list(self) -> list[PhonemeObject | Diphthongs]:
+        return self.syllables
     
 class SyllablesManager:
     def __init__(self, categories: CategoryObject, type_syl: str):

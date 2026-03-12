@@ -7,6 +7,7 @@ from modules.phonology.inventory_generator import PhonologyGenerator
 from modules.phonology.categorizer import Categorizer
 from modules.phonology.syllables import SyllablesManager
 from modules.phonology.word_phonology import PhoneticWord, WordPhonologyGenerator
+from modules.orthography.orthography_engine import Word, WordEngine
 
 class DebugRunner:
     def run(self):
@@ -352,6 +353,16 @@ class DebugRunner:
         print("="*40)
         for word in words:
             print(word)
+        print("="*40)
+
+        print("Звучания слов созданы.")
+
+        word_engine = WordEngine()
+        final_words = word_engine.words_generator(words)
+
+        print("="*40)
+        for final_word in final_words:
+            print(final_word, '- [', final_word.get_phonetic(), ']')
         print("="*40)
         
         print("Слова созданы.")
