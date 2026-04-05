@@ -27,14 +27,17 @@ class Categorizer:
         self.phonology_profile = profile
         self.diphthongs: list[Diphthongs] = []
 
-    def diphthongs_generator(self, num_diphthongs: int) -> tuple[str, list]:
+    def diphthongs_generator(
+        self, num_diphthongs: int, rng: random.Random | None = None
+    ) -> tuple[str, list]:
+        rng = rng if rng is not None else random
         diphthongs: set[Diphthongs] = set()
         if len(self.phonology_profile.vowels) >= 2:
             attempts = 0
             max_attempts = 100
             while len(diphthongs) < num_diphthongs and attempts < max_attempts:
-                v1 = random.choice(self.phonology_profile.vowels)
-                v2 = random.choice(self.phonology_profile.vowels)
+                v1 = rng.choice(self.phonology_profile.vowels)
+                v2 = rng.choice(self.phonology_profile.vowels)
                 if v1.base != v2.base:
                     diphthongs.add(Diphthongs(v1, v2))
                 attempts += 1

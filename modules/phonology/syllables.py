@@ -30,11 +30,17 @@ class SyllableObject():
 
     def get_phoneme_list(self) -> list[PhonemeObject | Diphthongs]:
         return self.syllables
+
+    def rebuild_segments(self):
+        """Обновить склейку onset+nucleus+coda после правок списков."""
+        self.syllables = self.onset + self.nucleus + self.coda
+        self.len_syllables = len(self.syllables)
     
 class SyllablesManager:
-    def __init__(self, categories: CategoryObject, type_syl: str):
+    def __init__(self, categories: CategoryObject, type_syl: str, rng: random.Random | None = None):
         self.categories = categories
         self.type_syllable = type_syl
+        self._rng = rng if rng is not None else random
 
     def syllable_generator(self):
         nucleus_type = ''
@@ -63,10 +69,10 @@ class SyllablesManager:
             possible_sounds = self.categories.categories.get(ch)
             if not possible_sounds: return None
             
-            choice = random.choice(possible_sounds)
+            choice = self._rng.choice(possible_sounds)
             attempts = 0
             while str(choice) == str(last_sound) and len(possible_sounds) > 1 and attempts < 10:
-                choice = random.choice(possible_sounds)
+                choice = self._rng.choice(possible_sounds)
                 attempts += 1
             
             onset.append(choice)
@@ -77,10 +83,10 @@ class SyllablesManager:
             possible_sounds = self.categories.categories.get(ch)
             if not possible_sounds: return None
             
-            choice = random.choice(possible_sounds)
+            choice = self._rng.choice(possible_sounds)
             attempts = 0
             while str(choice) == str(last_sound) and len(possible_sounds) > 1 and attempts < 10:
-                choice = random.choice(possible_sounds)
+                choice = self._rng.choice(possible_sounds)
                 attempts += 1
 
             coda.append(choice)
@@ -88,6 +94,6 @@ class SyllablesManager:
         if has_nucleus:
             possible_nuclei = self.categories.categories.get(nucleus_str)
             if not possible_nuclei: return None
-            nucleus.append(random.choice(possible_nuclei))
+            nucleus.append(self._rng.choice(possible_nuclei))
 
         return SyllableObject(self.type_syllable, has_nucleus, onset, nucleus, coda)

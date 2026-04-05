@@ -29,6 +29,22 @@ class PhonemeObject:
     def symbol(self) -> str:
         return self._data.get('symbol', '')
 
+    @property
+    def place(self) -> str:
+        return self._data.get('place', '') or ''
+
+    @property
+    def voiced(self) -> bool | None:
+        if 'voiced' not in self._data:
+            return None
+        return bool(self._data['voiced'])
+
+    @property
+    def rounded(self) -> bool | None:
+        if 'rounded' not in self._data:
+            return None
+        return bool(self._data['rounded'])
+
 
 class IPAManager:
     def __init__(self, json_path="resources/ipa_db.json"):

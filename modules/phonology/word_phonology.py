@@ -1,8 +1,14 @@
 from modules.phonology.syllables import SyllableObject, SyllablesManager
 from modules.phonology.categorizer import CategoryObject
+from modules.phonology.phonology_rules import PhonologyRuleApplier
+from modules.phonology.ipa_manager import IPAManager
+from modules.phonology.inventory_generator import PhonologyProfile
+from core.rule_settings import LanguageGenerationRules
 
 import copy, random
 import os, json
+
+_CLOSING_TEMPLATE_TAIL = frozenset("NLSFPC")
 
 class PhoneticWord:
     def __init__(self, stress_index: int, raw_word_phonetic: list[SyllableObject]):
@@ -48,11 +54,28 @@ class PhoneticWord:
                 
 
 class WordPhonologyGenerator:
-    def __init__(self, min_syllables: int, max_syllables: int, categories: CategoryObject):
+    def __init__(
+        self,
+        min_syllables: int,
+        max_syllables: int,
+        categories: CategoryObject,
+        rules: LanguageGenerationRules | None = None,
+        ipa: IPAManager | None = None,
+        profile: PhonologyProfile | None = None,
+        rng: random.Random | None = None,
+        stress_pattern: str = "mixed",
+        syllable_openness: float = 0.5,
+    ):
         self.categories = categories
         self.templates = self._load_templates()
         self.min_syllables = min_syllables
         self.max_syllables = max_syllables
+        self.rules = rules if rules is not None else LanguageGenerationRules()
+        self.ipa = ipa
+        self.profile = profile
+        self.rng = rng if rng is not None else random.Random()
+        self.stress_pattern = stress_pattern
+        self.syllable_openness = max(0.0, min(1.0, syllable_openness))
     
     def _load_templates(self, path: str = "resources/presets/syllable_templates.json") -> list[dict]:
         """Загружает шаблоны слогов из JSON"""
@@ -90,19 +113,31 @@ class WordPhonologyGenerator:
                 flat_templates.append(tmpl)
         return flat_templates
     
+    def _pattern_is_closed(self, tmpl: str) -> bool:
+        if not tmpl or tmpl[-1] in "VD":
+            return False
+        return tmpl[-1] in _CLOSING_TEMPLATE_TAIL
+
+    def _template_style_weight(self, tmpl: str) -> float:
+        o = self.syllable_openness
+        if self._pattern_is_closed(tmpl):
+            return max(0.2, 1.0 - 0.6 * o)
+        return 1.0 + 0.5 * o
+
     def _get_random_template(self) -> str:
-        """Выбирает один шаблон (строку) с учетом весов"""
-        if not self.templates: return "CV"
-        
-        patterns = [t['pattern'] for t in self.templates]
-        weights = [t['weight'] for t in self.templates]
-        return random.choices(patterns, weights=weights, k=1)[0]
+        """Выбирает один шаблон (строку) с учетом весов и «открытости» языка."""
+        if not self.templates:
+            return "CV"
+
+        patterns = [t["pattern"] for t in self.templates]
+        weights = [float(t["weight"]) * self._template_style_weight(t["pattern"]) for t in self.templates]
+        return self.rng.choices(patterns, weights=weights, k=1)[0]
 
     def generate_word(self) -> PhoneticWord:
         """Создает готовое слово"""
         min_syl = self.min_syllables
         max_syl = self.max_syllables
-        length = random.randint(min_syl, max_syl)
+        length = self.rng.randint(min_syl, max_syl)
         syllables = []
 
         for _ in range(length):
@@ -110,14 +145,14 @@ class WordPhonologyGenerator:
             syl_obj = None
             for _ in range(10):
                 tmpl = self._get_random_template()
-                manager = SyllablesManager(self.categories, tmpl)
+                manager = SyllablesManager(self.categories, tmpl, self.rng)
                 syl_obj = manager.syllable_generator()
                 if syl_obj:
                     break
             
             # Если не вышло - аварийный вариант
             if not syl_obj:
-                manager = SyllablesManager(self.categorizer, "CV")
+                manager = SyllablesManager(self.categories, "CV", self.rng)
                 syl_obj = manager.syllable_generator()
             
             syllables.append(syl_obj)
@@ -127,28 +162,29 @@ class WordPhonologyGenerator:
         
         phonetic_word = PhoneticWord(stress_idx, syllables)
         
-        self._eply_rules(phonetic_word)
+        self._apply_rules(phonetic_word)
         
         # Собираем слово
         return phonetic_word
     
     def _determine_stress(self, num_syllables: int) -> int:
-        """
-        Решает, на какой слог падает ударение.
-        В разработке
-        """
         if num_syllables == 1:
             return 0
-            
-        roll = random.random()
-        if roll < 0.6:
+        sp = (self.stress_pattern or "mixed").lower()
+        if sp == "initial":
             return 0
-        elif roll < 0.9:
-            return num_syllables - 2 if num_syllables >= 2 else 0
-        else:
+        if sp == "penultimate":
+            return max(0, num_syllables - 2)
+        if sp == "final":
             return num_syllables - 1
+        roll = self.rng.random()
+        if roll < 0.55:
+            return 0
+        if roll < 0.88:
+            return num_syllables - 2 if num_syllables >= 2 else 0
+        return num_syllables - 1
     
-    def _eply_rules(self, phonetic_word: PhoneticWord):
-        """В разработке"""
-        final_phonetic_word = phonetic_word.get_final_word_syllables()
-        phonetic_word.set_final_word_phonetic(final_phonetic_word)
+    def _apply_rules(self, phonetic_word: PhoneticWord):
+        inventory = self.profile.consonants if self.profile else []
+        applier = PhonologyRuleApplier(self.rules, self.ipa, inventory)
+        applier.apply(phonetic_word)

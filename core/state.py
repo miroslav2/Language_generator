@@ -1,3 +1,6 @@
+from core.rule_settings import LanguageGenerationRules
+
+
 class LanguageState:
     """
     Хранилище данных текущего языка.
@@ -8,3 +11,4 @@ class LanguageState:
         self.syllable_rules = []
         self.lexicon = {} 
         self.grammar_settings = {}
+        self.generation_rules = LanguageGenerationRules()

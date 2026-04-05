@@ -8,6 +8,58 @@ from modules.phonology.categorizer import Categorizer
 from modules.phonology.syllables import SyllablesManager
 from modules.phonology.word_phonology import PhoneticWord, WordPhonologyGenerator
 from modules.orthography.orthography_engine import Word, WordEngine
+from core.rule_settings import (
+    LanguageGenerationRules,
+    default_rules_readable,
+    default_rules_smoothed_phonology,
+)
+
+
+def _prompt_yes_no(prompt: str, default: bool) -> bool:
+    hint = "Y/n" if default else "y/N"
+    raw = input(f"{prompt} ({hint}): ").strip().lower()
+    if not raw:
+        return default
+    return raw in ("y", "yes", "д", "да")
+
+
+def prompt_generation_rules() -> LanguageGenerationRules:
+    print("\n--- Правила фонетики и написания ---")
+    print("1. Удобное чтение (один алфавит, простые буквы)")
+    print("2. Чтение + сглаживание произношения (кластеры, стыки слогов)")
+    print("3. Максимально «сыро» (как раньше: случайный алфавит на звук, все фон-правила выкл.)")
+    print("4. Настроить вручную (несколько вопросов)")
+    choice = input(">>> ").strip()
+    if choice == "2":
+        return default_rules_smoothed_phonology()
+    if choice == "3":
+        return LanguageGenerationRules(
+            orth_fixed_script=False,
+            orth_prefer_primary_grapheme=False,
+            orth_double_for_identical_adjacent=False,
+        )
+    if choice == "4":
+        r = LanguageGenerationRules()
+        print("Ответьте на вопросы (Enter — оставить значение по умолчанию для этого пункта).")
+        r.phon_trim_long_onsets = _prompt_yes_no("Обрезать длинные согласные в начале слога (>2 → крайние)", r.phon_trim_long_onsets)
+        r.phon_trim_long_codas = _prompt_yes_no("Обрезать длинный код (>2 согласных)", r.phon_trim_long_codas)
+        r.phon_voicing_assimilation = _prompt_yes_no("Согласование глух/звонк на стыке слогов", r.phon_voicing_assimilation)
+        r.phon_nasal_place_assimilation = _prompt_yes_no("Носовой перед согласным по месту", r.phon_nasal_place_assimilation)
+        r.phon_simplify_geminate_across_boundary = _prompt_yes_no("Упростить удвоение на стыке (…C|C… → …C|…)", r.phon_simplify_geminate_across_boundary)
+        r.orth_fixed_script = _prompt_yes_no("Один алфавит на всё слово", r.orth_fixed_script)
+        r.orth_prefer_primary_grapheme = _prompt_yes_no(
+            "Предпочитать основной вариант буквы", r.orth_prefer_primary_grapheme
+        )
+        r.orth_syllable_hyphens = _prompt_yes_no("Дефисы между слогами в написании", r.orth_syllable_hyphens)
+        r.orth_double_for_identical_adjacent = _prompt_yes_no(
+            "Удваивать букву при одинаковом звуке подряд", r.orth_double_for_identical_adjacent
+        )
+        r.orth_insert_glide_between_vowels = _prompt_yes_no("Вставлять glide (y/w) между гласными на стыке", False)
+        scr = input("Алфавит: latin / cyrillic / runes / mixed [latin]: ").strip().lower()
+        if scr in ("latin", "cyrillic", "runes", "mixed"):
+            r.orth_script = scr
+        return r
+    return default_rules_readable()
 
 class DebugRunner:
     def run(self):
@@ -345,8 +397,18 @@ class DebugRunner:
         num_2 = int(input("Введите желаемое максимальное кол-во слогов >> "))
         
         min_sylables, max_sylables = (min(num_1, num_2), max(num_1, num_2))
-        
-        word_genirator = WordPhonologyGenerator(min_sylables, max_sylables, categories)
+
+        gen_rules = prompt_generation_rules()
+        print("\n[Активные правила]", gen_rules.to_dict())
+
+        word_genirator = WordPhonologyGenerator(
+            min_sylables,
+            max_sylables,
+            categories,
+            rules=gen_rules,
+            ipa=ipa,
+            profile=profile,
+        )
         
         words = [word_genirator.generate_word() for _ in range(20)]
             
@@ -357,7 +419,7 @@ class DebugRunner:
 
         print("Звучания слов созданы.")
 
-        word_engine = WordEngine()
+        word_engine = WordEngine(rules=gen_rules)
         final_words = word_engine.words_generator(words)
 
         print("="*40)

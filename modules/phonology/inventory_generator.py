@@ -1,5 +1,6 @@
 import random
 from modules.phonology.ipa_manager import IPAManager, PhonemeObject
+from modules.phonology.inventory_slots import slot_index_for_symbol
 
 class PhonologyProfile:
     """
@@ -50,52 +51,158 @@ class PhonologyGenerator:
         profile.vowels = vowels
         return profile
 
-    def auto_generate_inventory(self, num_consonants: int, num_vowels: int) -> PhonologyProfile:
+    def consonant_selection_weight(self, c: dict) -> float:
+        """
+        Чем ниже rarity в базе, тем чаще звук; экзотика с rarity близко к complexity получает штраф.
+        """
+        rarity = float(c.get("rarity", 0.5))
+        margin = self.complexity - rarity
+        if margin < 0:
+            return 0.0
+        base = (1.0 - rarity) ** 1.35
+        edge = max(0.0, min(1.0, margin * 2.0))
+        return max(0.001, base * (0.35 + 0.65 * edge))
+
+    def vowel_selection_weight(self, v: dict) -> float:
+        rarity = float(v.get("rarity", 0.5))
+        margin = self.complexity - rarity
+        if margin < 0:
+            return 0.0
+        return max(0.001, (1.0 - rarity) ** 1.2 * (0.4 + 0.6 * max(0.0, min(1.0, margin * 2.0))))
+
+    def _weighted_pick_index(self, weights: list[float], rng: random.Random) -> int:
+        total = sum(weights)
+        if total <= 0:
+            return 0
+        r = rng.random() * total
+        acc = 0.0
+        for i, w in enumerate(weights):
+            acc += w
+            if r <= acc:
+                return i
+        return len(weights) - 1
+
+    def _pick_consonants_weighted(
+        self,
+        pool: list[dict],
+        count: int,
+        rng: random.Random,
+        use_slots: bool,
+    ) -> list[dict]:
+        working = list(pool)
+        selected: list[dict] = []
+        satisfied_slots: set[int] = set()
+
+        def allowed(d: dict) -> bool:
+            sym = d.get("symbol", "")
+            if not use_slots:
+                return True
+            si = slot_index_for_symbol(sym)
+            if si is None:
+                return True
+            return si not in satisfied_slots
+
+        while len(selected) < count and working:
+            cand = [d for d in working if allowed(d)]
+            if not cand:
+                cand = working
+            wts = [self.consonant_selection_weight(d) for d in cand]
+            if sum(wts) <= 0:
+                wts = [1.0] * len(cand)
+            idx = self._weighted_pick_index(wts, rng)
+            pick = cand[idx]
+            selected.append(pick)
+            working.remove(pick)
+            si = slot_index_for_symbol(pick.get("symbol", ""))
+            if si is not None:
+                satisfied_slots.add(si)
+        return selected
+
+    def _pick_vowels_weighted(
+        self,
+        pool: list[dict],
+        count: int,
+        rng: random.Random,
+        must_have: list[str] | None = None,
+    ) -> list[dict]:
+        must_have = must_have or ["a", "i", "u"]
+        by_sym = {v["symbol"]: v for v in pool}
+        selected: list[dict] = []
+        used_syms: set[str] = set()
+
+        for sym in must_have:
+            if len(selected) >= count:
+                break
+            if sym in by_sym and sym not in used_syms:
+                selected.append(by_sym[sym])
+                used_syms.add(sym)
+
+        working = [v for v in pool if v["symbol"] not in used_syms]
+        need = max(0, count - len(selected))
+        while need > 0 and working:
+            wts = [self.vowel_selection_weight(v) for v in working]
+            if sum(wts) <= 0:
+                wts = [1.0] * len(working)
+            idx = self._weighted_pick_index(wts, rng)
+            pick = working.pop(idx)
+            selected.append(pick)
+            need -= 1
+        return selected
+
+    def auto_generate_inventory(
+        self,
+        num_consonants: int,
+        num_vowels: int,
+        rng: random.Random | None = None,
+        use_consonant_slot_dedup: bool = True,
+    ) -> PhonologyProfile:
         """
         complexity: 0.0 (только самые простые звуки) -> 1.0 (полный хаос и кликсы)
         """
+        rng = rng if rng is not None else random.Random()
         profile = PhonologyProfile()
-        
-        # 1. Определяем размер инвентаря (чем сложнее, тем больше звуков, обычно)
-        # В среднем языке ~20-25 согласных и ~5-6 гласных
-        
-        available_cons = [c for c in self.ipa.all_consonants if c.get('rarity', 1.0) <= self.complexity and c.get('group') in self.allowed_consonants_groups]
-        
-        # Если доступных меньше, чем хотим - берем сколько есть
+
+        available_cons = [
+            c
+            for c in self.ipa.all_consonants
+            if c.get("rarity", 1.0) <= self.complexity
+            and c.get("group") in self.allowed_consonants_groups
+        ]
+
         count_c = min(len(available_cons), num_consonants)
-        selected_cons_data = random.sample(available_cons, count_c)
-        
-        # Превращаем словари в объекты PhonemeObject
+        selected_cons_data = self._pick_consonants_weighted(
+            available_cons, count_c, rng, use_slots=use_consonant_slot_dedup
+        )
+
         profile.consonants = [PhonemeObject(d) for d in selected_cons_data]
 
-        # 3. Выбираем ГЛАСНЫЕ
-        # Для гласных всегда берем базу (a, i, u), если они доступны
-        available_vowels = [v for v in self.ipa.all_vowels if v.get('rarity', 1.0) <= self.complexity and v.get('group') in self.allowed_vowels_groups]
-        
-        # Гарантируем (почти) наличие a, i, u
-        must_have = ['a', 'i', 'u']
-        final_vowels_data = []
-        
-        for symbol in must_have:
-            # Ищем звук в доступных
-            found = next((v for v in available_vowels if v['symbol'] == symbol), None)
-            
-            if found:
-                # 80% шанс добавить "базовый" гласный
-                # Если выпало > 0.8, мы его пропускаем (рискуем остаться без 'u')
-                if random.random() < 0.8:
-                    final_vowels_data.append(found)
-                    if found in available_vowels:
-                        available_vowels.remove(found)
-        
-        # Добираем остальные случайно
-        remaining_count = max(0, num_vowels - len(final_vowels_data))
-        count_v = min(len(available_vowels), remaining_count)
-        
-        final_vowels_data += random.sample(available_vowels, count_v)
-        
+        available_vowels = [
+            v
+            for v in self.ipa.all_vowels
+            if v.get("rarity", 1.0) <= self.complexity
+            and v.get("group") in self.allowed_vowels_groups
+        ]
+
+        final_vowels_data = self._pick_vowels_weighted(
+            available_vowels, num_vowels, rng, must_have=["a", "i", "u"]
+        )
+
         profile.vowels = [PhonemeObject(d) for d in final_vowels_data]
-        
+
+        return profile
+
+    def profile_from_manual_symbols(
+        self, consonant_symbols: list[str], vowel_symbols: list[str]
+    ) -> PhonologyProfile:
+        profile = PhonologyProfile()
+        c_map = {c["symbol"]: c for c in self.ipa.all_consonants}
+        v_map = {v["symbol"]: v for v in self.ipa.all_vowels}
+        for sym in consonant_symbols:
+            if sym in c_map:
+                profile.consonants.append(PhonemeObject(c_map[sym]))
+        for sym in vowel_symbols:
+            if sym in v_map:
+                profile.vowels.append(PhonemeObject(v_map[sym]))
         return profile
     
     def set_allowed_groups(self, allowed: tuple[list, list]):
